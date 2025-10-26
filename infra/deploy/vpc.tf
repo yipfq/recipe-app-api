@@ -95,3 +95,112 @@ resource "aws_subnet" "private_b" {
     Name = "${local.prefix}-private-b"
   }
 }
+
+resource "aws_security_group" "endpoint_sg" {
+  vpc_id = aws_vpc.main.id
+  name   = "${local.prefix}-endpoint-access"
+
+  ingress {
+    cidr_blocks = [
+      aws_vpc.main.cidr_block
+    ]
+    from_port = 443
+    to_port   = 443
+    protocol  = "tcp"
+  }
+}
+
+resource "aws_vpc_endpoint" "ecr-endpoint" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${data.aws_region.current.name}.ecr.api"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+
+  subnet_ids = [
+    aws_subnet.private_a,
+    aws_subnet.private_b
+  ]
+
+  security_group_ids = [
+    aws_security_group.endpoint_sg.id
+  ]
+
+  tags = {
+    Name = "${local.prefix}-ecr-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "dkr-endpoint" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${data.aws_region.current.name}.ecr.dkr"
+  private_dns_enabled = true
+  vpc_endpoint_type   = "Interface"
+
+  subnet_ids = [
+    aws_subnet.private_a,
+    aws_subnet.private_b
+  ]
+
+  security_group_ids = [
+    aws_security_group.endpoint_sg.id
+  ]
+
+  tags = {
+    Name = "${local.prefix}-dkr-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "logs-endpoint" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${data.aws_region.current.name}.logs"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+
+  subnet_ids = [
+    aws_subnet.private_a,
+    aws_subnet.private_b
+  ]
+
+  security_group_ids = [
+    aws_security_group.endpoint_sg.id
+  ]
+
+  tags = {
+    Name = "${local.prefix}-cloudwatch-endpoint"
+  }
+}
+
+
+resource "aws_vpc_endpoint" "ssm-endpoint" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${data.aws_region.current.name}.ssmmessages"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+
+  subnet_ids = [
+    aws_subnet.private_a,
+    aws_subnet.private_b
+  ]
+
+  security_group_ids = [
+    aws_security_group.endpoint_sg.id
+  ]
+
+  tags = {
+    Name = "${local.prefix}-ssm-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "s3-endpoint" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
+  vpc_endpoint_type = "Gateway"
+
+  route_table_ids = [
+    aws_vpc.main.default_route_table_id
+  ]
+
+  tags = {
+    Name = "${local.prefix}-s3-endpoint"
+  }
+}
