@@ -117,8 +117,8 @@ resource "aws_vpc_endpoint" "ecr-endpoint" {
   private_dns_enabled = true
 
   subnet_ids = [
-    aws_subnet.private_a,
-    aws_subnet.private_b
+    aws_subnet.private_a.id,
+    aws_subnet.private_b.id
   ]
 
   security_group_ids = [
@@ -137,8 +137,8 @@ resource "aws_vpc_endpoint" "dkr-endpoint" {
   vpc_endpoint_type   = "Interface"
 
   subnet_ids = [
-    aws_subnet.private_a,
-    aws_subnet.private_b
+    aws_subnet.private_a.id,
+    aws_subnet.private_b.id
   ]
 
   security_group_ids = [
@@ -157,8 +157,8 @@ resource "aws_vpc_endpoint" "logs-endpoint" {
   private_dns_enabled = true
 
   subnet_ids = [
-    aws_subnet.private_a,
-    aws_subnet.private_b
+    aws_subnet.private_a.id,
+    aws_subnet.private_b.id
   ]
 
   security_group_ids = [
@@ -178,8 +178,8 @@ resource "aws_vpc_endpoint" "ssm-endpoint" {
   private_dns_enabled = true
 
   subnet_ids = [
-    aws_subnet.private_a,
-    aws_subnet.private_b
+    aws_subnet.private_a.id,
+    aws_subnet.private_b.id
   ]
 
   security_group_ids = [
