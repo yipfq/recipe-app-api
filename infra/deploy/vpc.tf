@@ -77,7 +77,7 @@ resource "aws_route" "public_b" {
 
 resource "aws_subnet" "private_a" {
   vpc_id            = aws_vpc.main.id
-  cidr_block        = "10.0.101.0/24"
+  cidr_block        = "10.1.101.0/24"
   availability_zone = "${data.aws_region.current.name}a"
 
   tags = {
@@ -88,7 +88,7 @@ resource "aws_subnet" "private_a" {
 
 resource "aws_subnet" "private_b" {
   vpc_id            = aws_vpc.main.id
-  cidr_block        = "10.0.102.0/24"
+  cidr_block        = "10.1.102.0/24"
   availability_zone = "${data.aws_region.current.name}b"
 
   tags = {
