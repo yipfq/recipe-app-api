@@ -15,7 +15,7 @@ resource "aws_security_group" "rds-sg" {
   name        = "${local.prefix}-rds-inbound-access"
   vpc_id      = aws_vpc.main.id
 
-  ingress = {
+  ingress {
     from_port = 5432
     to_port   = 5432
     protocol  = "tcp"
