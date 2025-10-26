@@ -13,3 +13,11 @@ variable "contact" {
   default     = "alex@abc.com"
 }
 
+variable "db_username" {
+  description = "db username"
+  default     = "recipeapp"
+}
+
+variable "db_password" {
+  description = "db password"
+}
